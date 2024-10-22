@@ -1,454 +1,93 @@
 ---
-title: "Guia de usuário e desenvolvedor do appISPP"
-author: FGV - Innovation Lab
+title: "README: tidyMap"
 output: html_document
 ---
 
-**Ao final deste manual o leitor estará apto a responder:**
+Este pacote R foi desenvolvido com o objetivo de consolidar planilhas de mapeamento em um formato ‘tidy’, facilitando a análise de dados por pesquisadores, analistas e outros profissionais que trabalhem com essas planilhas. O pacote consiste em um conjunto de 3 funções:
 
-*Por que a ferramenta foi criada?*
+- ler_arquivos.R
 
-*Como operar a ferramenta?*
+- arrumar_origem.R
 
-*Como corrigir ou modificar a ferramenta?*
+- consolidar_arquivos.R
 
-**Nome do app:** *appISPP*
+## **ler_arquivos.R**
 
-**Cliente:** *FGV - IBRE - SCI - NIP*
+Esta função recebe uma lista de caminhos (paths) dos arquivos e o número de sheet como parâmetros, e retorna uma tibble arrumada. Além disso, ela realiza as seguintes tarefas:
 
-**Última atualização:** *02-05-2019*
+- Lê os arquivos em formato .xlsx utilizando a biblioteca readxl
 
-**Responsável:** *Luiz Fernando Coelho Passos*
+- Seleciona as colunas relevantes para análise
 
-Informações da sessão:
+- Trata as colunas de datas
+
+- Normaliza os caracteres para ASCII
+
+- Normaliza as informações de UF e outros campos para letras maiúsculas
+
+- Adiciona a coluna Origem, que contém a informação de qual planilha o registro foi extraído.
+
+## **arrumar_origem.R**
+
+Esta função recebe uma lista de caminhos (paths) dos arquivos e retorna uma string com a origem dos arquivos. Essa origem é extraída do nome do arquivo e inclui informações como a fonte dos dados e o período abrangido.
+
+## **consolidar_arquivos.R**
+
+Esta função é a que deve ser executada para consolidar todas as planilhas de mapeamento em um único arquivo. Ela não possui parâmetros e retorna um arquivo .xlsx com todas as informações dos arquivos de entrada.
+
+Este pacote é útil para quem trabalha com dados em planilhas de mapeamento e precisa consolidá-las em um formato mais amigável para análise. Esperamos que este pacote facilite o trabalho dos profissionais que lidam com esses dados.
+
+# Como utilizar a ferramenta?
+
+1. Abrir o arquivo ‘Projeto.R’
+
+2. Aguardar inicialização do RStudio (IDE)
+
+3. Rodar o script ‘Run.R’
+
+4. Fechar o projeto no RStudio (don’t save)
+
+Output: AAAA-MM-DD_mapeamento.csv
+
+- Demonstração:
+
+![](tutorial.gif)
+
+# Dev
+
+Você pode obter a versão de desenvolvimento do pacote através do seguinte comando:
 
 ```
-> sessionInfo()
-R version 3.5.0 (2018-04-23)
-Platform: x86_64-w64-mingw32/x64 (64-bit)
-Running under: Windows 7 x64 (build 7601) Service Pack 1
-
-Matrix products: default
-
-locale:
-[1] LC_COLLATE=Portuguese_Brazil.1252 
-[2] LC_CTYPE=Portuguese_Brazil.1252   
-[3] LC_MONETARY=Portuguese_Brazil.1252
-[4] LC_NUMERIC=C                      
-[5] LC_TIME=Portuguese_Brazil.1252    
-
-attached base packages:
-[1] stats     graphics 
-[3] grDevices utils    
-[5] datasets  methods  
-[7] base     
-
-other attached packages:
- [1] htmltools_0.3.6    
- [2] webshot_0.5.1      
- [3] magick_2.0         
- [4] bindrcpp_0.2.2     
- [5] flextable_0.4.4    
- [6] gridExtra_2.3      
- [7] officer_0.3.2      
- [8] Hmisc_4.1-1        
- [9] Formula_1.2-3      
-[10] survival_2.41-3    
-[11] lattice_0.20-35    
-[12] formattable_0.2.0.1
-[13] ggplot2_3.1.0      
-[14] tibbletime_0.1.1   
-[15] abjutils_0.2.1     
-[16] purrr_0.2.5        
-[17] magrittr_1.5       
-[18] stringr_1.3.1      
-[19] lubridate_1.7.4    
-[20] zoo_1.8-4          
-[21] xlsx_0.6.1         
-[22] readxl_1.1.0       
-[23] dplyr_0.7.8        
-[24] tidyr_0.8.2        
-[25] zip_1.0.0          
-[26] data.table_1.11.8  
-[27] shinyWidgets_0.4.4 
-[28] readr_1.3.0        
-[29] shiny_1.2.0        
-
-loaded via a namespace (and not attached):
- [1] jsonlite_1.6       
- [2] splines_3.5.0      
- [3] assertthat_0.2.0   
- [4] latticeExtra_0.6-28
- [5] xlsxjars_0.6.1     
- [6] cellranger_1.1.0   
- [7] yaml_2.2.0         
- [8] gdtools_0.1.7      
- [9] pillar_1.3.0       
-[10] backports_1.1.2    
-[11] glue_1.3.0         
-[12] uuid_0.1-2         
-[13] digest_0.6.18      
-[14] RColorBrewer_1.1-2 
-[15] promises_1.0.1     
-[16] checkmate_1.8.5    
-[17] colorspace_1.3-2   
-[18] httpuv_1.4.5       
-[19] Matrix_1.2-14      
-[20] plyr_1.8.4         
-[21] pkgconfig_2.0.2    
-[22] xtable_1.8-3       
-[23] scales_1.0.0       
-[24] processx_3.3.0     
-[25] later_0.7.5        
-[26] tibble_1.4.2       
-[27] htmlTable_1.12     
-[28] withr_2.1.2        
-[29] nnet_7.3-12        
-[30] lazyeval_0.2.1     
-[31] crayon_1.3.4       
-[32] mime_0.6           
-[33] ps_1.3.0           
-[34] evaluate_0.12      
-[35] xml2_1.2.0         
-[36] foreign_0.8-70     
-[37] tools_3.5.0        
-[38] hms_0.4.2          
-[39] munsell_0.5.0      
-[40] cluster_2.0.7-1    
-[41] callr_3.2.0        
-[42] packrat_0.5.0      
-[43] compiler_3.5.0     
-[44] tinytex_0.11       
-[45] rlang_0.3.0.1      
-[46] grid_3.5.0         
-[47] rstudioapi_0.8     
-[48] htmlwidgets_1.3    
-[49] labeling_0.3       
-[50] base64enc_0.1-3    
-[51] rmarkdown_1.11     
-[52] gtable_0.2.0       
-[53] R6_2.3.0           
-[54] knitr_1.21         
-[55] bindr_0.1.1        
-[56] rJava_0.9-10       
-[57] stringi_1.2.4      
-[58] Rcpp_1.0.0         
-[59] rpart_4.1-13       
-[60] acepack_1.4.1      
-[61] tidyselect_0.2.5   
-[62] xfun_0.6
+devtools::install_github('wfaquieri/tidyMap')
 ```
 
-# Introdução
+# Description
 
-Este documento é um manual 2 em 1 que busca atender usuários e desenvolvedores do aplicativo appISPP.
+Package: /tidyMap
 
-- A seção **Como usar a ferramenta? (para usuários)** é voltada aos usuários que acessarão a ferramenta sem precisar entender o que há por trás dela.
+Title: Consolida as planilhas de mapeamento em um formato ‘tidy’.
 
-- A seção **Como editar a ferramenta? (para desenvolvedores)** é destinada a desenvolvedores que buscam modificar a ferramenta, seja para fazer alguma correção ou melhoria.
+Version: 0.0.0.9000
 
-Os autores buscaram construir a ferramenta de tal modo que o funcionamento básico fosse intuitivo aos usuários. Acreditando no sucesso desse objetivo, imagino que você seja um **desenvolvedor** em busca de informações sobre a edição do aplicativo. Este documento não tem como finalidade substituir um treinamento que capacite o uso avançado das ferramentas utilizadas, porém diversas referências para consultas serão deixadas ao longo do documento.
+Authors@R: person(“Winicius”, “Faquieri”, , “winicius.faquieri@fgv.br”, role = c(“aut”, “cre”), comment = c(ORCID = “YOUR-ORCID-ID”))
 
-**Hitchhiker, grab your towel and don’t panic!** O manual foi produzido com a finalidade de te guiar em qualquer modificação da ferramenta sem que você precise da ajuda de ninguém, mas, caso necessário, a equipe de desenvolvedores ficará muito feliz em responder seu e-mail:
+Description: Consolida as planilhas de mapeamento num formato ‘tidy’.
 
-- gustavo.lopo@fgv.br
-- fellipe.gomes@fgv.br
-- luiz.passos@fgv.br
+License: MIT + file LICENSE
 
-Críticas e sugestões também são bem-vindas.
+Encoding: UTF-8
 
-# Síntese do projeto
+Roxygen: list(markdown = TRUE)
 
-Todo mês o NIP produz um relatório para avaliar o índice de serviços para poços de petróleo. Para produção dos relatórios estão envolvidas basicamente as seguintes etapas:
+RoxygenNote: 7.2.1
 
-1. Obtenção dos dados pelo sistema
+NeedsCompilation: no
 
-2. Análises
+Packaged: 2022-08-25 16:13:21 UTC; Winicius
 
-3. Confecção de Gráficos e Tabelas
+Author: Winicius Faquieri [aut, cre] (YOUR-ORCID-ID)
 
-4. Formatar relatórios e planilhas
+Maintainer: Winicius Faquieri winicius.faquieri@fgv.br
 
-5. Exportar relatórios em PDF e planilhas em XLSX
+Built: R 4.2.1; ; 2022-08-25 16:13:22 UTC; windows
 
-Como os relatórios gerados a cada mês contêm os mesmos objetos (gráficos de linhas, barras e tabelas), variando apenas a data de referência da amostra coletada, projetou-se a automação das etapas de 1 a 5. Espera-se com isso acelerar a produção dos relatórios e evitar possíveis erros decorrentes de manipulação humana dos arquivos.
-
-# Limitações atuais do aplicativo (21/12/2018)
-
-Antes de prosseguir, é importante que você saiba que a consulta direta ao banco de dados[^1] via SQL[^2] ainda está **indisponível**. No momento ela só está disponível para os desenvolvedores do aplicativo.
-
-A razão disso é que o acesso ainda está em desenvolvimento e por enquanto só é possível o acesso local de forma individual. Futuramente esperamos que este acesso possa ser feito de forma geral. Isto é, qualquer pessoa com um login poderá utilizar o aplicativo hospedado no servidor.
-
-# Próximos passos para o desenvolvimento
-
-O acesso à base de dados no servidor ainda está indisponível e por conta disso as seguintes tarefas ainda estão pendentes e devem ser concluídas após a liberação do acesso geral.
-
-- Os dados obtidos do banco de dados via SQL são (d-1), isto é, são os dados de preço do dia anterior. Solicitar a TIC os dados disponibilizados em d, isto é, no dia para que o relatório gere os resultados mais atuais possíveis.
-
-- Combinar com a área que faz uso do aplicativo o momento para o fechamento dos cálculos realizados na base SIS[^3].
-
-# Como usar a ferramenta? **(para usuários)**
-
-# Obter dados
-
-**Atenção:** Como a conexão direta com o banco de dados ainda **não está disponível**, será necessário fazer o input manual. São 5 arquivos de entrada no total - 3 arquivos exportados do SIS e 2 séries do IGP - veja:
-
-- ISPP (SIS)
-
-- IGP-DI (nº da série: 161384)
-
-- INCC-DI - Mao de Obra (nº da série: 160906)
-
-Os nomes destes arquivos devem estar nomeados exatamente como (letras minúsculas, sem espaço e em formato `csv`):
-
-- `ispp.xlsx`
-
-- `igp.csv`
-
-- `incc_di_mao_de_obra.csv`
-
-# Manipulação inicial dos dados obtidos
-
-Exemplo de como são estes arquivos e como manipulá-los:
-
-![](tutorial_1.gif)
-*Exemplo de como é a base ispp.xlsx*
-
-![](tutorial_2.gif)
-
-*Exemplo de manipulação para INCC-DI-MAO-DE-OBRA e IGP-DI*
-
-Portanto, para ambos os casos, cada nova base de dados obtida por mês deverá ser acrescentada ao final da última linha da base csv que contém os resultados dos meses passados.
-
-# Processamento dos dados
-
-Para dar início à produção, insira a **data** que constará na carta (Data de hoje para gerar o mês passado).
-
-**Obs.:** Caso queira fazer para datas passadas, clique sobre o botão acima de “Insira a data que constará na carta:” para liberar o uso de datas passadas.
-
-Insira o **número do relatório** que aparecerá na capa do relatório, para **inserir a base de dados** selecione todos os arquivos e arraste-os juntos e clique em **Gerar Relatório** (Note que essas instruções também são apresentadas no corpo to aplicativo). Observe atentamente os gifs abaixo para melhor entendimento.
-
-No caso em que se deseje gerar o relatório para datas passadas, prossiga da seguinte maneira:
-![](tutorial_3.gif)
-
-Pressionar o botão `Gerar Relatório` para que a rotina de análises seja executada.
-
-Quando a tarefa terminar a seguinte mensagem será exibida:
-
-![](tutorial_4.gif)
-
-Após a mensagem de que todos os objetos do relatório foram criados com sucesso, basta clicar em Download e fazer o `download` do relatório:
-
-![](tutorial_5.gif)
-
-OBS: Foi utilizado o gif do ICSP, pois em ambos os apps os botões possuem as mesmas finalidades
-
-# Produto final
-
-Ao final do processo, o relatório disponível para a entrega para o cliente terá a seguinte forma:
-
-![](tutorial_6.gif)
-
-# Como editar a ferramenta? **(para desenvolvedores)**
-
-# Quem está apto a editar esse aplicativo?
-
-O aplicativo foi pensado com dois conceitos desafiadores por trás:
-
-- O aplicativo deverá ser facilmente editado.
-
-- A edição não demandará um especialista em TI, podendo ser feita por um “cientista de dados iniciante”. Como diria o famoso lema do Chef Gusteau, “qualquer um pode cozinhar” (spoiler).
-
-Essas premissas foram buscadas até as últimas consequências e esperamos que um estagiário dedicado com pouco tempo de faculdade esteja apto a cozinhar. Segue descrição dos conhecimentos mínimos para cada tarefa.
-
-Boa vontade, e talvez um pouco de sagacidade, será suficiente para editar a carta do relatório ou qualquer trecho de texto corrido. Conhecimentos em programação não serão necessários aqui.
-
-Conhecimento básico em linguagem de programação R será necessário caso deseje modificar alguma manipulação de dados e conhecimento básico da linguagem LATEX caso deseje modificar o documento PDF.
-
-Para usuários mais experientes, que tenham interesse em modificar funcionalidades da ferramenta, será necessário algum conhecimento em Shiny e no caso da necessidade de modificar o estilo/aparência da ferramenta será necessário conhecimento básico da técnica de linguagem de programação web CSS.
-
-Isso é possível devido à arquitetura do aplicativo que pode ser segmentada em 3 compartimentos:
-
-i. Código para gerar os objetos do relatório (gráficos, tabelas, figuras e outros).
-
-ii. Código para compilar o documento PDF com os objetos gerados.
-
-iii. Código para gerar a interface amigável ao usuário que irá operar a ferramenta.
-
-# Estrutura do diretório
-
-Veja a seguir como a pasta está organizada e sua descrição:
-
-```
-.
-├─ appispp.Rproj          (Arquivo para abrir e organizar o projeto)        
-├─ global.R               (Configuracoes gerais do app)        
-├─ ui.R                   (Interface do usuario)        
-├─ server.R               (Servidor do app)        
-├─ src/                   (dependencias p/ processamento do app)
-│   └─ img_output/        (Imagens geradas pelo script generate_image.R)
-│   └─ img_readme/        (Imagens para readme)
-│   └─ temp_zip/          (Arquivos temporarios para download no .zip de apoio)
-│   └─ templates_pdf/     (Imagens para template do relatorio pdf final)
-│   └─ functions/         (Funcoes desenvolvidas para o uso do app)
-│   └─ generate_excel.R   (Script que gera as planilhas)
-│   └─ generate_image.R   (Script que gera as imagens do relatorio)
-│   └─ report.Rmd         (Arquivo Rmarkdown que compila o relatorio .pdf)
-│   └─ date.txt           (Criado pelo app: data informada pelo usuário)
-│   └─ matriz_just.rds    (Criado pelo app: matriz com as justificativas informadas pelo usuario)
-├─ www                    (Dependencias p/ customizar o app)
-│   └─ css                (Pasta com arquivo css)
-│   └─ fonts              (Arquivos de formatacao do css)
-│   └─ images             (Imagens utilizadas no css)
-│   └─ template.html      (Template html para app)
-├─ data                   (Pasta para armazenas dados de entrada do app)
-│   └─ dep                (Arquivos Excel que servem template e persistencia de dados )
-│   └─ input_e_entregas   (Backup de arquivos utilizados como carga para o app e outputs)
-└─ readme.md              (Este manual)
-```
-
-Os arquivos que você provavelmente terá interesse em editar são:
-
-- **global.R:** Arquivo que contem configuracoes de inicializacao do app como carregar pacotes, carregar dependencias, informacoes delogin etc
-
-- **ui.R:** É o script que compila a interface do usuário
-
-- **server.R:** É o script que renderiza os scripts de acordo com a interacao do usuário
-
-- **generate_excel.R:** Script que é renderizado quando o usuário pressiona o botao `Gerar Relatório`, este arquivo você deve editar caso deseje fazer alterações nas planilhas, você verá mais informações em: Planilhas
-
-- **generate_image.R:** Script que é renderizado quando o usuário pressiona o botao `Gerar Relatório`, este arquivo você deve editar caso deseje fazer alterações nos gráficos e tabelas do relatório, você verá mais informações em: Gráficos e Tabelas
-
-- **report.Rmd:** é o arquivo que você deve editar caso deseje fazer alguma alteração no texto ou na aparência do arquivo PDF, você verá mais informações em: Conteúdo do texto
-
-# Como o aplicativo funciona?
-
-O esquema seguinte sintetiza a lógica do aplicativo:
-
-![](fluxo.png)
-
-É possível notar que na primeira etapa ocorre a **Entrada** dos dados que pode ser por acesso direto ao banco de dados (que se encontra **indisponível** até o momento) ou através do input manual dos dados (como apresentado na seção Como usar o aplicativo).
-
-Na parte da **Execução** do app temos os scripts `ui.R`, `server.R` e `global.R` que contém informações da interface do usuário e do servidor e chama as rotinas `generate_image_by_local.R` e `report.Rmd` que criam os objetos para os relatórios. Esses objetos criados são salvos temporariamente na pasta `src/img_output/`.
-
-Junto com o template do relatório, que está na pasta `src/template_pdf`, esses objetos são combinados no script final `report.Rmd` que gera o documento `RelatórioISPP.pdf` para download na **Saída** do app.
-
-# Realizar alterações
-
-# Ambiente do RStudio
-
-A linguagem de programação R, como muitas outras linguagens de programação, trabalha com o conceito de pacotes que reúnem códigos, dados, documentação, testes e são fáceis de compartilhar com outras pessoas.
-
-Neste projeto foram utilizadas versões específicas de pacotes do R e suas versões podem ser conferidas no documento ao final deste documento.
-
-# Planilhas
-
-Referência para ajudar a entender como utilizar o xlsx e gerar planilhas elegantes: http://www.sthda.com/english/wiki/r-xlsx-package-a-quick-start-guide-to-manipulate-excel-files-in-r e https://cran.r-project.org/web/packages/xlsx/xlsx.pdf
-
-As planilhas são gerados pelo script `generate_excel.R.` No início do script é feita a leitura e a manipulação dos dados e em seguida inicia-se a seção de `# #### EXCEL #### #` onde as planilhas são geradas. Veja um esquema para facilitar o entendimento:
-
-![](fluxo_2.png)
-
-Os arquivos gerados aqui são armazenados na pasta `data/dep/` devido a persistência da **série histórica** e temporariamente armazenados na pasta `src/temp_zip`.
-
-# Gráficos
-
-Referência para ajudar a entender como utilizar o ggplot2 e gerar gráficos elegantes: https://bookdown.org/rdpeng/exdata/the-ggplot2-plotting-system-part-1.html
-
-Os gráficos do texto são gerados pelo script `generate_image.R`. No início do script é feita a leitura e a manipulação dos dados e em seguida inicia-se a seção de `# #### Figuras #### #`, onde as figuras do relatório são geradas. Veja um esquema para facilitar o entendimento:
-
-![](fluxo_3.png)
-
-Os arquivos gerados aqui são temporariamente armazenados na pasta: `src/img_output` para serem obtidos posteriormente e inseridos no relatório PDF
-
-# Tabelas
-
-Referência para ajudar a entender como utilizar o flextable para gerar as tabelas: https://davidgohel.github.io/flextable/articles/overview.html
-
-As tabelas são geradas de maneira muito semelhante aos gráficos. Todas as tabelas que aparecem no relatório PDF são geradas pelo script `generate_image.R` na seção `#### TABELAS ####`, onde as tabelas do relatório são geradas. Veja um esquema para facilitar o entendimento:
-
-![](fluxo_4.png)
-
-Os arquivos gerados aqui também são temporariamente armazenados na pasta `src/img_output` para serem obtidos posteriormente e inseridos no relatório PDF.
-
-# Conteúdo do texto
-
-No momento que os dados já foram obtidos e todos os objetos que irão fazer parte do relatório já estão prontos, chega a hora de juntar tudo em um único arquivo RMarkdown. Mais informações sobre RMarkdown na página oficial em https://rmarkdown.rstudio.com/ e no livro do autor do pacote: https://bookdown.org/yihui/rmarkdown/.
-
-**Mas por que RMarkdown?**
-
-Arquivos RMarkdown (com a extensão `.Rmd`, como `report.Rmd`) permitem que o desenvolvedor una em um único documento “pedaços” de texto (Utilizando linguagens apropriadas para alta formatação, como `Markdown`,`LaTeX`, `CSS` dentre outros ) e “pedaços” de código (como `R`, `Python`, `SQL` etc), possibilitando a criação de um documento que faz o uso de rotinas elaboradas por diferentes desenvolvedores, utilizando diferentes linguagens de programação e obtendo o melhor de cada uma delas.
-
-Para alterações no conteúdo do texto, basta abrir o arquivo `report.Rmd` e fazer as alterações necessárias no texto e clicar em `Run app`, como ilustrado no gif da seção Como usar o aplicativo
-
-![](fluxo_5.png)
-
-# Aparência do documento
-
-Para alterar as imagens do template (cabeçalho, rodapé, logo, etc.) acesse a pasta `src/template_pdf` e substitua a imagem indesejada por um arquivo homônimo com a mesma extensão.
-
-# Como fazer novas publicações no Servidor Interno da FGV (em um container Docker)
-
-Para hospedar uma nova versão do aplicativo no servidor interno da FGV em um container Docker serão necessários alguns passos:
-
-1. Tenha certeza de todas as funcionalidades da ferramenta estão funcionando de acordo com o esperado
-
-2. Após isso, junte todos os arquivos necessários para o funcionamento em um arquivo .zip
-
-3. Envie este arquivo zip para o responsável na TIC pelas publicações (em caso de dúvidas à quem enviar, entre em contato com os desenvolvedores)
-
-4. Caso o arquivo seja grande demais para enviar por e-mail, coloque os arquivos em um pendrive e leve-os para o responsável pela publicação
-
-5. Lembre-se sempre de enviar junto ao zip um documento .txt com as informações da última sessão R na qual o aplicativo funcionou (para obter tal informação, rode no console do R o comando: `sessionInfo()`
-
-# FAQ
-
-*Quais precauções devo tomar ao editar o aplicativo?*
-
-Como mencionado na seção Como fazer as alterações mencionadas com segurança? é altamente recomendado que o responsável pelas alterações desta ferramenta faça uma cópia de segurança da última versão funcionando (Selecionar, Ctrl+C, Ctrl+V).
-
-*Como editar a carta?*
-
-- Releia a seção Conteúdo do texto
-
-*Como editar a imagem da capa?*
-
-- Releia a seção Conteúdo do texto
-
-*Como mudar o rodapé ou cabeçalho?*
-
-- Releia a seção Conteúdo do texto
-
-*Como alterar uma figurado relatório?*
-
-- Releia as seções Gráficos e Tabelas
-
-*Como mudar um pedaço de texto do relatório?*
-
-- Releia a seção Conteúdo do texto
-
-*Como sei se minha edição no código deu certo?*
-
-- Releia a seção Como testar as alterações?
-
-*Estou com problemas com os pacotes do R, como resolver?*
-
-- Releia a seção Ambiente do RStudio
-
-# Autores
-
-O aplicativo foi desenvolvido pelo BBMP da FGV IBRE. Trabalharam nesse projeto:
-
-- Gustavo Lôpo Andrade
-- Fellipe Gomes
-- Luiz Fernando Passos
-
-*Li tudo e ainda estou inseguro para editar a ferramenta.*
-
-- Leia novamente, pesquise sua dúvida no Stackoverflow, deixe sua dúvida para o desenvolvedor do pacote no Github, leia as documentações dos pacotes no help do R, pesquise no Google do R… Respire fundo e **may the force be with you!**
-
-# Glossário
-
-[^1]: O termo genérico “banco de dados” diz respeito ao armazenamento de informações de uma forma geral. Geralmente um software que é instalado em um computador (servidor) e tem a função de gerenciar um ou mais bancos de dados.
-[^2]: A SQL — Structured Query Language, ou linguagem estruturada de consultas — é a linguagem padrão dos chamados Bancos de Dados Relacionais que, por sua vez, são bancos de dados estruturados em forma de colunas e linhas, também chamadas de tuplas, tendo seus dados armazenados em tabelas.
-[^3]: Sistema de Índices Setoriais: é um local onde são calculados índices.
