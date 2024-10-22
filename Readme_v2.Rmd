@@ -1,106 +1,72 @@
 ---
+title: "README"
 output: html_document
 ---
 
-<br>
+O objetivo da ferramenta é acrescentar à planilha de controle existente, a nova demanda recebida, sinalizando duplicidades, quando houver.
 
-<div style="text-align: center;">
-  ![](logo_fgv.png)
-</div>
+Resumo: Atualiza a planilha de controle e gera uma mensagem, caso seja necessário, sinalizando duplicidade de solicitação de elementar (verifica se na planilha de controle o elementar já havia sido solicitado e retorna o número da CI onde ele foi solicitado – coluna A: Origem). Caso a coluna de elementar esteja vazia, realiza essa verificação através do Item externo e, em casos em que ambos estejam vazias, sinaliza que a planilha não tem o elementar e o externo.
 
-<br>
 
-<div style="font-size: 25px; color: #003366; font-weight: bold; text-align: center;">
-  PROJETO: PLANILHAS DE CARGA SIMG
-</div>
+## Como utilizar a ferramenta?
+0. Atualizar a pasta ‘INPUT’ com as novas demandas recebidas (extraída do sistema de Cis)
 
-<br>
+1. Abrir o arquivo ‘Projeto.R’
 
-![](auditorio_fgv.png)
+2. Aguardar inicialização do RStudio (IDE)
 
-<br>
+3. Rodar o script ‘Run.R’
 
-Este **README** tem por objetivo documentar o trabalho de automatização da geração das planilhas de carga SIMG, separadas por job.
+4. Aguardar a mensagem: “Planilha gerada com sucesso!”
 
-## Sumário
-1. Introdução
-2. Estrutura do diretório
-3. Guia do usuário
-4. Informações da Sessão
+5. Fechar o projeto no RStudio (don’t save!)
 
-## Introdução
-O objetivo do presente projeto foi delegar ao computador tarefas que se repetiam a cada nova referência (dimensão temporal). Essa transferência permite aos analistas disporem de mais tempo para a realização de tarefas mais complexas. Anteriormente, as planilhas de carga SIMG eram geradas manualmente para cada job. Após o projeto, foi criado um fluxo de trabalho informático, integrando fontes de manipulação (comuns em arquivos do Excel) e os mesmos outputs são gerados em poucos segundos em apenas alguns segundos.
 
-**Lista de Jobs**: SICRO, ECON-DNIT, INFRAES, SICFER, DER-MG, GOINFRA e SABESP.
+## Dependências
+R version 4.2.1 (2022-06-23 ucrt)
 
-## Estrutura do diretório
-Veja a seguir como a pasta está organizada e sua descrição. **Na pasta de 'inputs' atenção para o nome do arquivo e formato (.xlsx, .csv).**
-
-```plaintext
-.
-├── Projeto.Rproj                     (Arquivo para abrir e organizar o projeto)
-├── main.R                            (Script principal)
-├── src
-│   └── code/gerar_carga.R            (Script que gera as planilhas de carga para cada job)
-│   └── Modelo de carga - JOB.xlsx    (Templates em Excel, separados por job, para ser lido pelo R)
-├── inputs                            (Pasta para armazenar dados de entrada do projeto)
-│   └── 1-TODAS AS SOLICITAÇÕES...xlsx (É necessário conter a expressão 'TODAS AS SOLICITAÇÕES' + .xlsx)
-│   └── CARGASIMG_AAAAMMDD.xlsx       (É necessário conter a expressão 'CARGASIMG' + .xlsx)
-│   └── manutenção.csv                (É necessário conter a expressão 'manutenção' + .csv)
-├── outputs                           (Pasta para armazenar dados de saída do projeto - Resultados)
-└── README.html                       (Este manual)
-```
-
-## Guia do usuário - Como utilizar a ferramenta?
-
-Segue a sequência de passos que devem ser realizadas pela utilização a cada nova referência:
-
-1. Atualizar a pasta 'inputs'.
-2. Rodar o projeto no RStudio: `Projeto.Rproj`.
-3. Executar o script: `main.R`.
-4. Conferir os arquivos gerados no diretório `outputs`.
-5. As planilhas de carga geradas estão na pasta `outputs`: `AAAA-MM-DD_CARGA_SIMG_JOB.xlsx`.
-
-<br>
-
-Assista o gif:
-<p style="text-align: center;">
-  <img src="tutorial.gif" alt="Assista o gif" width="1000"/>
-</p>
-
-<br>
-
-## Informações da Sessão
-Informações de versão sobre R, o Sistema Operacional e pacotes anexados ou carregados.
-
-```
-R version 4.2.0 (2022-04-22 ucrt)
 Platform: x86_64-w64-mingw32/x64 (64-bit)
-Running under: Windows 10 x64 (build 19043)
+
+Running under: Windows 10 x64 (build 19044)
 
 Matrix products: default
 
 locale:
-[1] LC_COLLATE=Portuguese_Brazil.utf8  LC_CTYPE=Portuguese_Brazil.utf8   
-[3] LC_MONETARY=Portuguese_Brazil.utf8 LC_NUMERIC=C                      
-[5] LC_TIME=Portuguese_Brazil.utf8    
+
+[1] LC_COLLATE=Portuguese_Brazil.utf8
+
+[2] LC_CTYPE=Portuguese_Brazil.utf8
+
+[3] LC_MONETARY=Portuguese_Brazil.utf8
+
+[4] LC_NUMERIC=C
+
+[5] LC_TIME=Portuguese_Brazil.utf8
 
 attached base packages:
-[1] stats     graphics  grDevices utils     datasets  methods   base     
 
-other attached packages:
-[1] tictoc_1.0.1    lubridate_1.8.0 openxlsx_4.2.5  janitor_2.1.0  
-[5] readr_2.1.2     readxl_1.4.0    stringr_1.4.0   tidyr_1.2.0    
-[9] dplyr_1.0.9     magrittr_2.0.3  purrr_0.3.4    
+[1] stats graphics grDevices utils datasets methods
+
+[7] base
 
 loaded via a namespace (and not attached):
-[1] zip_2.2.0        Rcpp_1.0.8.3     cellranger_1.1.0 pillar_1.7.0    
-[5] compiler_4.2.0   tools_4.2.0      bit_4.0.4        lifecycle_1.0.1 
-[9] tibble_3.1.7     pkgconfig_2.0.3  rlang_1.0.2      DBI_1.1.2       
-[13] cli_3.3.0        rstudioapi_0.13  parallel_4.2.0   withr_2.5.0     
-[17] generics_0.1.2   vctrs_0.4.1      hms_1.1.1        bit64_4.0.5     
-[21] tidyselect_1.1.2 glue_1.6.2       snakecase_0.11.0 R6_2.5.1        
-[25] fansi_1.0.3      vroom_1.5.7      tzdb_0.3.0       ellipsis_0.3.2  
-[29] assertthat_0.2.1 archive_1.1.5    utf8_1.2.2       stringi_1.7.6   
-[33] crayon_1.5.1 
-```
+
+[1] rstudioapi_0.14 magrittr_2.0.3 tidyselect_1.1.2
+
+[4] R6_2.5.1 rlang_1.0.5 fansi_1.0.3
+
+[7] stringr_1.4.1 dplyr_1.0.10 tools_4.2.1
+
+[10] utf8_1.2.2 cli_3.4.1 DBI_1.1.3
+
+[13] ellipsis_0.3.2 readxl_1.4.1 assertthat_0.2.1
+
+[16] tibble_3.1.8 lifecycle_1.0.2 purrr_0.3.4
+
+[19] vctrs_0.4.1 glue_1.6.2 stringi_1.7.8
+
+[22] compiler_4.2.1 pillar_1.8.1 cellranger_1.1.0
+
+[25] generics_0.1.3 writexl_1.4.0 lubridate_1.8.0
+
+[28] pkgconfig_2.0.3
